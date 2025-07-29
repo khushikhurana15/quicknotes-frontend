@@ -1,0 +1,135 @@
+/* PublicNoteView.css */
+
+.public-note-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh; /* Takes at least the full viewport height */
+    padding: 20px;
+    background-color: var(--background-color); /* Use your general background color */
+    color: var(--text-color); /* Use your primary text color */
+    font-family: Arial, sans-serif; /* Or your preferred font-family */
+}
+
+.public-note-card {
+    background-color: var(--card-bg); /* Use your card/note background color */
+    padding: 30px;
+    border-radius: 12px; /* Slightly rounded corners */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); /* Soft, noticeable shadow */
+    max-width: 800px; /* Max width for readability */
+    width: 100%; /* Take full width up to max-width */
+    margin-top: 50px; /* Space from the top of the page */
+    margin-bottom: 50px; /* Space from the bottom for longer notes */
+    border: 1px solid var(--border-color); /* Subtle border */
+}
+
+.public-note-title {
+    font-size: 2.5rem; /* Large and prominent title */
+    color: var(--primary-color); /* Your primary accent color for the title */
+    margin-bottom: 25px;
+    text-align: center;
+    word-wrap: break-word; /* Ensure long titles wrap */
+}
+
+.public-note-content {
+    font-size: 1.1rem; /* Comfortable reading size */
+    line-height: 1.8; /* Increased line height for readability */
+    color: var(--text-color);
+    margin-bottom: 30px;
+    white-space: pre-wrap; /* Preserve whitespace and line breaks from content */
+    word-wrap: break-word; /* Ensure long words break */
+    /* Basic styling for rich text content if you are using dangerouslySetInnerHTML */
+    & h1, & h2, & h3, & h4, & h5, & h6 {
+        color: var(--heading-color, var(--text-color)); /* Fallback to text-color */
+        margin-top: 1.5em;
+        margin-bottom: 0.8em;
+    }
+    & p {
+        margin-bottom: 1em;
+    }
+    & ul, & ol {
+        margin-left: 20px;
+        margin-bottom: 1em;
+    }
+    & li {
+        margin-bottom: 0.5em;
+    }
+    & a {
+        color: var(--primary-accent-color); /* Use your accent color for links */
+        text-decoration: underline;
+    }
+    & strong {
+        font-weight: bold;
+    }
+    & em {
+        font-style: italic;
+    }
+    & pre {
+        background-color: var(--input-bg); /* Use a subtle background for code blocks */
+        border-left: 3px solid var(--primary-color);
+        padding: 10px 15px;
+        border-radius: 5px;
+        font-family: 'Roboto Mono', monospace;
+        overflow-x: auto;
+        margin-bottom: 1em;
+    }
+    & blockquote {
+        border-left: 4px solid var(--border-color);
+        padding-left: 15px;
+        margin-left: 0;
+        font-style: italic;
+        color: var(--secondary-text-color);
+        margin-bottom: 1em;
+    }
+}
+
+
+.public-note-meta {
+    font-size: 0.9rem;
+    color: var(--secondary-text-color); /* Lighter text for metadata */
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Loading and Error States */
+.public-note-container.loading,
+.public-note-container.error,
+.public-note-container.not-found {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+}
+
+.public-note-container.error p {
+    color: var(--danger-color);
+    font-weight: bold;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .public-note-card {
+        padding: 20px;
+        margin-top: 30px;
+        margin-bottom: 30px;
+    }
+    .public-note-title {
+        font-size: 2rem;
+    }
+    .public-note-content {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .public-note-card {
+        padding: 15px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+    .public-note-title {
+        font-size: 1.8rem;
+    }
+}

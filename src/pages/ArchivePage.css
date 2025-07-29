@@ -1,0 +1,194 @@
+/* src/pages/ArchivePage.css */
+html {
+    box-sizing: border-box;
+  }
+  *,
+  *::before,
+  *::after {
+    box-sizing: inherit;
+  }
+  body {
+    overflow-x: hidden; /* This is crucial for preventing horizontal scrollbars on the entire page */
+    /* You might also want to set a default margin: 0; for body to remove browser default spacing */
+    margin: 0;
+}
+
+  .archive-page-container {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      background-color: var(--background-color);
+      color: var(--text-color);
+      transition: background-color 0.3s ease, color 0.3s ease;
+      width: 100%; /* Ensure container takes full width */
+      overflow-x: hidden; /* Ensure this container does not scroll horizontally */
+  }
+  
+  .archive-page-container .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 25px;
+      background-color: var(--header-bg-color); /* Using variable for consistency */
+      /* background-color: #837e7baa; */ /* Removed hardcoded color */
+      box-shadow: var(--box-shadow);
+      z-index: 1000;
+      width: 100%; /* Ensure it takes full width */
+      flex-shrink: 0; /* Prevent header from shrinking below its content */
+  }
+  
+  .archive-page-container .page-header .brand-section {
+      display: flex;
+      align-items: center;
+      /* padding-left: 0px; */ /* This might not be needed if content is fine, or adjust as needed */
+  }
+  
+  .archive-page-container .page-header .logo {
+      height: 70px; /* As per your last update */
+      margin-right: 1px;
+      flex-shrink: 0; /* Prevent logo from shrinking */
+  }
+  
+  .archive-page-container .page-header .app-title {
+      margin: 0;
+      font-size: 1.8em;
+      color: var(--primary-color);
+      /* padding-left: 0px; */
+      white-space: nowrap; /* Prevent title from wrapping unnecessarily */
+      overflow: hidden; /* Hide overflow if title is too long */
+      text-overflow: ellipsis; /* Add ellipsis if title is truncated */
+  }
+  
+  .archive-page-container .page-header .header-actions {
+      display: flex;
+      gap: 10px;
+      /* padding-right: 0px; */
+      flex-shrink: 0; /* Prevent actions from shrinking */
+  }
+  
+  /* Reusing button styles from App.css or NotePage.css */
+  .archive-page-container .button {
+      padding: 8px 15px; /* Use a standard padding that is not 0 0 for buttons with text */
+      border-radius: var(--border-radius);
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+      border: 1px solid transparent;
+  }
+  
+  .archive-page-container .button.secondary {
+      background-color: var(--button-secondary-bg);
+      color: var(--button-secondary-text);
+      border-color: var(--button-secondary-border);
+  }
+  
+  .archive-page-container .button.secondary:hover {
+      background-color: var(--button-secondary-hover-bg);
+      color: var(--button-secondary-hover-text);
+      border-color: var(--button-secondary-hover-border);
+  }
+  
+  .archive-page-container .main-content {
+      flex-grow: 1;
+      padding: 20px;
+      max-width: 800px; /* This is where you reduced the width */
+      margin: 20px auto;
+      background-color: var(--card-bg-color);
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      /* Add overflow-x here to contain its own content if needed, but usually not required with max-width */
+      overflow-x: hidden;
+  }
+  
+  .archive-page-container .loading-message-container,
+  .archive-page-container .no-notes-message {
+      text-align: center;
+      padding: 40px 0;
+      font-size: 1.2em;
+      color: var(--text-color);
+      /* These styles already ensure centering and flex-grow */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-grow: 1;
+      min-height: calc(100vh - 70px - 40px); /* Adjusted min-height: 70px header, 40px some footer/bottom margin */
+  }
+  
+  /* ... (spinner and keyframes are fine) ... */
+  
+  .archive-page-container .note-list-section .notes-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+      padding: 20px 0;
+      /* Ensure notes-list also doesn't cause overflow */
+      overflow-x: hidden;
+  }
+  
+  /* ... (modal styles are fine) ... */
+  
+  /* MODIFIED: Styling for the "Back to All Notes" button on Archive Page header */
+  .archive-page-container .back-to-all-notes-btn {
+      background-color: var(--button-secondary-bg);
+      color: var(--button-secondary-text);
+      border: 1px solid var(--button-secondary-border);
+      /* CHANGE THIS: Restore proper padding for a button with text */
+      padding: 8px 15px; /* Revert to a standard button padding */
+      border-radius: var(--border-radius);
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+      white-space: nowrap;
+      flex-shrink: 0; /* Prevent the button from shrinking */
+  }
+  
+  .archive-page-container .back-to-all-notes-btn:hover {
+      background-color: var(--button-secondary-hover-bg);
+      color: var(--button-secondary-hover-text);
+      border-color: var(--button-secondary-hover-border);
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+      .archive-page-container .page-header {
+          flex-direction: row; /* Keep row for title and back button */
+          justify-content: space-between; /* Keep space-between */
+          gap: 10px;
+          padding: 10px 15px;
+      }
+  
+      .archive-page-container .page-header .brand-section {
+          margin-bottom: 0;
+      }
+  
+      .archive-page-container .page-header .app-title {
+          font-size: 1.5em;
+          /* Allow title to truncate on smaller screens if needed */
+          flex-shrink: 1;
+          min-width: 0;
+      }
+  
+      .archive-page-container .page-header .header-actions {
+          flex-direction: row;
+          width: auto;
+      }
+  
+      .archive-page-container .page-header .button {
+          width: auto;
+      }
+  }
+  
+  @media (max-width: 480px) {
+      .archive-page-container .page-header {
+          padding: 10px;
+      }
+      .archive-page-container .page-header .logo {
+          height: 30px;
+      }
+      .archive-page-container .page-header .app-title {
+          font-size: 1.3em;
+      }
+      .modal-content {
+          padding: 20px;
+      }
+  }

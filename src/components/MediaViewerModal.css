@@ -1,0 +1,93 @@
+/* Basic styling for the modal overlay and content */
+.media-viewer-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensure it's on top of other content */
+}
+
+.media-viewer-modal-content {
+  background-color: var(--background-color-secondary); /* Use your theme variable */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  position: relative;
+  max-width: 90%; /* Adjust as needed */
+  max-height: 90%; /* Adjust as needed */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.media-viewer-modal-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: var(--text-color); /* Use your theme variable */
+}
+
+/* For actual media (image, video, iframe/pdf) */
+.media-viewer-content-media {
+  max-width: 100%;
+  max-height: 80vh; /* Adjust as needed */
+  object-fit: contain; /* Ensures content fits without cropping */
+  margin-top: 20px; /* Space from close button */
+}
+
+/* Specific styling for video content within the modal */
+.modal-video-content {
+  width: auto; /* Allow video to size naturally based on max-height */
+  height: 80vh; /* Prioritize height for video */
+}
+
+/* PDF Viewer specific styles */
+.pdf-viewer-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%; /* Or set a specific max-width */
+  height: 80vh; /* Allow PDF to take up most of the height */
+  overflow: auto; /* If PDF is larger than container, allow scrolling */
+}
+
+.pdf-viewer-container canvas {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid #ddd; /* Optional: adds a border around the page */
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.pdf-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+  gap: 10px;
+  color: var(--text-color);
+}
+
+.pdf-controls button {
+  padding: 8px 15px;
+  background-color: var(--button-background);
+  color: var(--button-text-color);
+  border: 1px solid var(--button-border);
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.pdf-controls button:disabled {
+  background-color: var(--button-background-disabled);
+  cursor: not-allowed;
+  opacity: 0.6;
+}

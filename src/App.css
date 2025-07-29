@@ -1,38 +1,147 @@
-.App {
-  text-align: center;
+:root {
+  --bg-color: #f7f7f7;
+  --text-color: #222;
+  --card-bg: #ffffff;
+  --border-color: #e0e0e0;
+  --primary-color: #305b88;
+  --secondary-color: #6c757d;
+  --input-bg: #ffffff;
+  --input-text: #000000;
+  --input-border: #ccc;
+  --button-bg: #0f79eb;
+  --button-hover-bg: #1171d8;
+  --success-button-bg: #28a745;
+  --danger-button-bg: #dc3545;
+  --note-shadow: rgba(0, 0, 0, 0.1);
+  --about-section-border-style: dashed;
+  --note-date-color: #736d6d;
+  --header-bg: #ffffff;
+  --header-text: #333333;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+body.dark {
+  --bg-color: #131313;
+  --text-color: #f0f0f0;
+  --card-bg: #121213;
+  --border-color: #2f3437;
+  --primary-color: #1175b7;
+  --secondary-color: #333538;
+  --input-bg: #181919;
+  --input-text: #f0f0f0;
+  --input-border: #070e1a;
+  --button-bg: #171718;
+  --button-hover-bg: #323437;
+  --success-button-bg: #199f37;
+  --danger-button-bg: #cc1426;
+  --note-shadow: rgba(94, 95, 101, 0.25);
+  --about-section-border-style: solid;
+  --note-date-color: #aca5a5;
+  --header-bg: #141515;
+  --header-text: #f2f0f0;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  transition: background-color 0.3s, color 0.3s;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+input,
+textarea,
+select {
+  border: 1px solid var(--input-border);
+  background-color: var(--input-bg);
+  color: var(--input-text);
+  padding: 10px;
+  margin-bottom: 10px;
+  font-size: 16px;
+  border-radius: 6px;
+  box-sizing: border-box;
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 0.15rem rgba(0, 123, 255, 0.25);
+}
+
+button {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+  background-color: var(--button-bg);
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+button:hover {
+  background-color: var(--button-hover-bg);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.button {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  font-size: 0.95rem;
+}
+
+.button.primary {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.button.primary:hover {
+  filter: brightness(1.1);
+}
+
+.button.secondary {
+  background-color: var(--secondary-color);
+  color: white;
+}
+
+.button.secondary:hover {
+  filter: brightness(1.1);
+}
+
+.button.success {
+  background-color: var(--success-button-bg);
+  color: white;
+}
+
+.button.success:hover {
+  background-color: var(--success-button-hover-bg);
+}
+
+.button.danger {
+  background-color: var(--danger-button-bg);
+  color: white;
+}
+
+.button.danger:hover {
+  background-color: var(--danger-button-hover-bg);
+}
+
+.button.theme-toggle {
+  background-color: var(--card-bg);
+  color: var(--primary-color);
+  border: 1px solid var(--border-color);
+}
+
+.button.theme-toggle:hover {
+  background-color: var(--bg-color);
+}
+
+.note {
+  background-color: var(--card-bg);
+  border-radius: 8px;
+  box-shadow: 0 2px 5px var(--note-shadow);
+  color: var(--text-color);
 }

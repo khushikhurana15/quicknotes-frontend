@@ -1,0 +1,106 @@
+/* ShareModal.css or App.css */
+.share-modal-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 25px;
+    gap: 8px; 
+    flex-wrap: wrap; }
+
+.share-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .share-modal-content {
+    background-color: var(--card-bg); /* Or a specific light/dark background */
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    max-width: 500px;
+    width: 90%;
+    position: relative;
+    text-align: center;
+    color: var(--text-color);
+  }
+  
+  .share-modal-content h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: var(--primary-color);
+  }
+  
+  .share-modal-content p {
+    margin-bottom: 15px;
+    font-size: 0.95em;
+  }
+  
+  .close-modal-button {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 1.8em;
+    cursor: pointer;
+    color: var(--text-secondary);
+    transition: color 0.2s ease;
+  }
+  
+  .close-modal-button:hover {
+    color: var(--danger-color);
+  }
+  
+  .share-link-display {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+    gap: px;
+  }
+  
+  .share-link-input {
+    flex-grow: 1;
+    padding: 10px 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    font-size: 0.9em;
+    background-color: var(--input-bg);
+    color: var(--text-color);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .copy-link-button {
+    padding: 10px 10px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
+  }
+  
+  .copy-link-button:hover {
+    background-color: var(--primary-hover);
+  }
+  
+  .copy-success-message {
+    color: var(--success-color); /* You might need to define --success-color in App.css */
+    margin-top: 10px;
+    font-weight: bold;
+  }
+  
+  .share-warning {
+    font-size: 0.85em;
+    color: var(--text-secondary);
+    margin-top: 20px;
+  }

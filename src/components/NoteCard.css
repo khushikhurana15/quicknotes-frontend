@@ -1,0 +1,624 @@
+.note-card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 1px;
+  padding: 5px 20px 10px 20px;
+  box-shadow: 0 2px 10px var(--note-shadow);
+  display: flex;
+  flex-direction: column;
+  min-height: auto;
+  position: relative;
+  /* Change this: */
+  overflow: visible; /* Or 'auto' */
+  flex-grow: 0;
+  flex-shrink: 0;
+  align-self: flex-start;
+}
+
+/* MODIFIED: Pinned Note Card Styling */
+/* Changed .note-card.pinned-note to .note-card.pinned to match JSX */
+.note-card.pinned {
+    background-color: var(--pinned-card-bg, #fff9e6);
+    border-color: var(--pinned-border-color, #bbbb);
+    box-shadow: 0 4px 10px var(--pinned-note-shadow, rgba(255, 204, 0, 0.3));
+    order: -1; /* This will make pinned notes appear first in flex/grid container */
+    z-index: 10;
+    position: relative;
+    animation: pulseBorder 0.5s ease-out; /* Added animation */
+}
+
+/* Animation for pinned notes */
+@keyframes pulseBorder {
+    0% { border-color: var(--border-color); }
+    50% { border-color: var(--pinned-border-color, #ffeb3b); } /* Brighter border during pulse */
+    100% { border-color: var(--pinned-border-color, #bbbb); }
+}
+
+.note-card.pinned .note-title {
+    color: var(--pinned-primary-color, #b38600);
+}
+
+.note-card.pinned .note-content {
+    color: var(--pinned-text-color, #6a5500);
+}
+
+
+/* NEW: Header for pin button placement */
+.note-header {
+  display: flex;
+  justify-content: space-between; /* Pushes title to left, actions to right */
+  align-items: center; /* Vertically aligns title and buttons */
+  gap: 10px; /* Space between title and the action group */
+  margin-bottom: 10px; /* Adjust as per your note header spacing */
+  width: 100%; /* Ensure it spans the full width of the card */
+}
+
+.note-title-box {
+  /* This ensures the title box can shrink if the pin button takes space */
+  flex-grow: 1;
+  border-bottom: 1px solid var(--border-color); /* THIS IS THE BORDER */
+  padding-bottom: 5px;
+  margin-bottom: 5px;
+  text-align: center;
+  /* Allow text to wrap if the pin button is present */
+  min-width: 0; /* Important for flex-items that should shrink */
+}
+
+.note-title {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: var(--primary-color);
+  margin-bottom: 5px;
+  word-wrap: break-word; /* Ensure long titles wrap */
+  overflow-wrap: break-word; /* Standard for overflow wrapping */
+}
+
+/* MODIFIED: Container for top actions (like the pin button) */
+/* Changed .note-actions-top to .note-meta-actions to match the JSX for the div containing Share and Pin */
+.note-meta-actions { /* NEW/MODIFIED CLASS NAME */
+  display: flex;
+  gap: 10px; /* Space between Share and Pin buttons */
+  align-items: center;
+  flex-shrink: 0; /* Prevent it from shrinking */
+  padding-bottom: 5px; /* Align with title box bottom border */
+}
+
+/* NEW: Share Button Styling */
+.share-button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    font-size: 1em; /* Adjusted to match FaThumbtack size for visual consistency */
+    color: var(--primary-color); /* A distinct color for share, using primary */
+    transition: color 0.2s ease, transform 0.2s ease;
+    display: flex; /* To center Font Awesome icon */
+    align-items: center;
+    justify-content: center;
+}
+
+.share-button:hover {
+    color: var(--button-hover-bg); /* Use a hover color from your theme */
+    transform: translateY(-1px);
+}
+
+/* MODIFIED: Pin Button Styling (updated class name to match JSX and consistent colors) */
+.pin-toggle-button { /* Now targeting the specific class used in JSX */
+    background: none; /* Make it transparent, as you're using text/icon color */
+    border: none;
+    padding: 0; /* Remove padding if icon controls size */
+    cursor: pointer;
+    font-size: 1em; /* Adjusted to match Share button for consistency */
+    transition: color 0.2s ease, transform 0.2s ease;
+    display: flex; /* To center Font Awesome icon */
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary); /* Default color for an unpinned note's button */
+}
+
+/* This targets the pin button when the note is *not* pinned (i.e., you can click to pin it) */
+.pin-toggle-button:not(.unpin) {
+    color: #efb404; /* Color for the pin icon when the note is unpinned (ready to be pinned) */
+}
+
+.pin-toggle-button:not(.unpin):hover {
+    color: var(--primary-color);
+    transform: translateY(-1px);
+}
+
+/* This targets the pin button when the note *is* pinned (i.e., you can click to unpin it) */
+.pin-toggle-button.unpin { /* Using the 'unpin' class from JSX when note.isPinned is true */
+    color: var(--primary-color); /* Use primary color for pinned state */
+}
+
+.pin-toggle-button.unpin:hover {
+    color: #efb404; /* Change color on hover when already pinned */
+    transform: translateY(-1px);
+}
+
+
+/* Existing Styles (unmodified) */
+
+.note-content {
+  font-size: 1em;
+  color: var(--text-color);
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding-bottom: 0px;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  line-height: 1.2;
+  height: auto;
+}
+.note-content-textarea {
+  padding: 12px 15px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background-color: var(--input-bg);
+  color: var(--text-color);
+  font-size: 1em;
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 100px;
+  resize: vertical;
+  font-size: 1rem;
+  line-height: 1.5;
+  white-space: pre-wrap; /* Ensure line breaks are preserved */
+  word-wrap: break-word; /* Ensure long words break */
+}
+
+
+/* For the text area when editing an existing note */
+.edit-content-textarea {
+  padding: 8px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  background-color: var(--input-bg);
+  color: var(--text-color);
+  font-size: 1em;
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 100px;
+  resize: vertical;
+  white-space: pre-wrap; /* Ensure line breaks are preserved */
+  word-wrap: break-word; /* Ensure long words break */
+}
+
+.note-media-container {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.note-image,
+.note-video,
+.note-pdf-embed {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 5px;
+  border: 1px solid var(--border-color);
+  object-fit: contain;
+  max-height: 300px;
+}
+
+.note-video {
+  width: 100%;
+  max-height: 350px;
+}
+
+.note-pdf-embed {
+  height: 500px;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding: 0;
+  border: none;
+}
+
+.note-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px solid var(--border-color);
+  width: 100%; /* Ensure footer spans full width */
+}
+
+.note-date-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 0px;
+}
+
+.note-date-text {
+  margin-right: auto;
+  padding-left: 0px;
+}
+
+.note-date {
+  color: #827c7c;
+  font-size: 0.85em;
+}
+
+.note-actions {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+.note-actions button {
+  padding: 6px 10px; 
+  font-size: 0.8em; 
+}
+.note-actions .button.secondary { /* Assuming your archive button also has 'secondary' class */
+  background-color: #f7bc0b; /* Button ka background color */
+  color: var(--button-text-color); /* Icon ka default text color white ya jo aapne set kiya hai */
+  /* Agar aap sirf is button ke icon ka color alag se set karna chahte hain */
+}
+
+/* Updated TTS Play/Stop Button Styles */
+.tts-button { /* Use this class in JSX for the play/stop button */
+    padding: 8px 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.95em;
+    font-weight: 600;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    white-space: nowrap;
+    display: flex; /* To center Font Awesome icon */
+    align-items: center;
+    justify-content: center;
+    background-color: var(--accent-color);
+    color: white;
+}
+
+.tts-button:hover {
+    background-color: var(--accent-color-hover);
+    transform: translateY(-1px);
+}
+
+.tts-button.playing {
+    background-color: var(--primary-color);
+    animation: pulse-green 1.5s infinite;
+}
+
+.tts-button.playing:hover {
+    background-color: var(--primary-color-hover);
+}
+
+@keyframes pulse-green {
+    0% {
+        box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.4);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(76, 175, 80, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(76, 175, 80, 0);
+    }
+}
+
+/* Dark theme specific pulse for TTS */
+[data-theme='dark'] .tts-button.playing {
+  background-color: var(--primary-color);
+  animation: pulse-dark-green 1.5s infinite;
+}
+
+@keyframes pulse-dark-green {
+    0% {
+        box-shadow: 0 0 0 0 rgba(102, 187, 106, 0.4);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(102, 187, 106, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(102, 187, 106, 0);
+    }
+}
+
+.note-actions .button.edit {
+  background-color: #28a745 !important; /* Specific green with !important */
+  color: white !important; /* Specific white with !important */
+}
+
+.note-actions .button.edit:hover {
+  background-color: #218838 !important; /* Specific darker green for hover with !important */
+}
+
+.note-actions .button.delete {
+  background-color: #dc3545 !important; /* Specific red with !important */
+  color: white !important; /* Specific white with !important */
+}
+
+.note-actions .button.delete:hover {
+  background-color: #c82333 !important; /* Specific darker red for hover with !important */
+}
+
+.note-edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex-grow: 1;
+}
+
+.edit-title-input,
+.edit-content-textarea { /* Keeping this for existing usage, though content will be TipTap */
+  padding: 8px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  background-color: var(--input-bg);
+  color: var(--text-color);
+  font-size: 1em;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.edit-title-input {
+  font-weight: 600;
+}
+
+.edit-content-textarea { /* Keeping this for existing usage, though content will be TipTap */
+  min-height: 100px;
+  resize: vertical;
+}
+
+.note-edit-form .file-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 10px;
+  padding: 8px;
+  border: 2px dashed var(--border-color);
+  border-radius: 8px;
+  background-color: var(--input-bg);
+}
+
+.note-edit-form .hidden-file-input {
+  display: none;
+}
+
+.note-edit-form .custom-file-upload-button {
+  display: inline-block;
+  background-color: #eda407;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.8em;
+  transition: background-color 0.2s ease;
+  white-space: nowrap;
+}
+
+.note-edit-form .custom-file-upload-button:hover {
+  background-color: #d67a00;
+}
+
+.note-edit-form .file-name-display {
+  color: var(--text-color);
+  font-size: 0.8em;
+  flex-grow: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.edit-media-preview-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  background-color: var(--card-bg);
+}
+
+.edit-uploaded-media-preview,
+.edit-uploaded-pdf-preview {
+  max-width: 100%;
+  max-height: 150px;
+  border-radius: 5px;
+  object-fit: contain;
+  border: 1px solid var(--border-color);
+  display: block;
+  margin: 0 auto;
+}
+
+.edit-uploaded-media-preview[src$=".mp4"],
+.edit-uploaded-media-preview[src$=".webm"],
+.edit-uploaded-media-preview[src$=".ogg"] {
+    width: 100%;
+    max-height: 200px;
+}
+
+.edit-uploaded-pdf-preview {
+  width: 100%;
+  height: 200px;
+  border: 1px solid var(--border-color);
+}
+
+/* NEW: Styles for the tags input field in edit mode */
+.note-edit-form .edit-tags-input {
+  width: 100%;
+  padding: 10px 15px;
+  margin-bottom: 10px; /* Adjust spacing as needed */
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background-color: var(--input-bg);
+  color: var(--text-color);
+  font-size: 0.95em;
+  box-sizing: border-box;
+}
+
+.note-edit-form .edit-tags-input::placeholder {
+  color: var(--text-secondary);
+}
+
+.note-edit-form .edit-tags-input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.2); /* Ensure --primary-rgb is defined if using this */
+  outline: none;
+}
+
+
+/* NEW: Styles for the tags display container */
+.note-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px; /* Space between tags */
+  margin-top: 10px;
+  margin-bottom: 15px; /* Space before content/media */
+}
+
+/* NEW: Styles for individual tag badges */
+.tag-badge {
+  background-color: #6c6d72; /* Uses your existing secondary color variable */
+  color: white;
+  padding: 5px 10px;
+  border-radius: 20px; /* Pill shape */
+  font-size: 0.8em;
+  font-weight: bold;
+  text-transform: lowercase; /* Optional: keep tags consistent */
+  white-space: nowrap; /* Prevent tags from breaking */
+  transition: background-color 0.2s ease;
+}
+
+[data-theme='dark'] .tag-badge {
+  background-color: var(--secondary-color-hover); /* Adjust for dark theme using existing variable */
+  color: var(--text-color);
+}
+
+/* Adjusted margins for media elements to account for tags */
+.note-image,
+.note-video,
+.note-pdf {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 15px auto 0; /* Adjust margin after tags */
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+.note-pdf {
+    height: 300px; /* Keep consistent height for iframe */
+}
+
+/* NEW TIPTAAP EDITOR STYLES */
+
+/* Container for the TipTap toolbar */
+.tiptap-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  padding: 8px;
+  background-color: var(--toolbar-bg, #f0f0f0); /* New variable or default light gray */
+  border: 1px solid var(--border-color);
+  border-bottom: none; /* No border at the bottom, editor will provide it */
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  margin-top: 5px; /* Adjust as needed to align with title input */
+  z-index: 1; /* Ensure toolbar is above other elements if needed */
+  position: relative;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* Style for individual toolbar buttons */
+.tiptap-toolbar-button {
+  background-color: var(--button-bg, #e0e0e0); /* New variable or default gray */
+  color: var(--button-text, #333);
+  border: 1px solid var(--button-border, #ccc);
+  border-radius: 4px;
+  padding: 6px 10px;
+  cursor: pointer;
+  font-size: 0.9em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.tiptap-toolbar-button:hover {
+  background-color: var(--button-hover-bg, #d0d0d0);
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.tiptap-toolbar-button.is-active {
+  background-color: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+}
+
+.tiptap-toolbar-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Styling for the TipTap editor content area itself */
+/* TipTap uses the .ProseMirror class for its editable content area */
+.ProseMirror {
+  min-height: 150px; /* Provide a decent default height */
+  border: 1px solid var(--border-color);
+  border-top: none; /* The toolbar has the top border */
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  padding: 10px 15px;
+  background-color: var(--input-bg); /* Use your input background color */
+  color: var(--text-color);
+  font-size: 1em;
+  line-height: 1.2;
+  outline: none; /* Remove default focus outline */
+  word-wrap: break-word; /* Ensure long words wrap */
+  white-space: pre-wrap; /* Preserve whitespace and line breaks */
+  cursor: text;
+  flex-grow: 1; /* Allow it to take available height in flex container */
+}
+
+/* Focus state for the editor */
+.ProseMirror:focus-visible {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.2); /* Assuming --primary-rgb is defined */
+  outline: none;
+}
+
+/* Basic styling for content within the editor (e.g., bold, italic, lists) */
+.ProseMirror p {
+  margin-top: 0;
+  margin-bottom: 0.em;
+  line-height: 1.2; /* Some spacing between paragraphs */
+}
+
+.ProseMirror p:empty::before { /* This targets completely empty paragraphs */
+  content: "";
+  display: inline-block; /* Or block, depending on desired empty line height */
+  height: 1em; /* Adjust this to control the height of empty lines */
+}
+
+.ProseMirror ul,
+.ProseMirror ol {
+  margin: 1em 0;
+  padding-left: 1.5em;
+  list-style-position: outside;
+}
+
+.ProseMirror ul li,
+.ProseMirror ol li {
+  margin-bottom: 0.25em;
+}
+
+.ProseMirror strong {
+  font-weight: bold;
+}
+
+.ProseMirror em {
+  font-style: italic;
+}
+
+.ProseMirror u {
+  text-decoration: underline;
+}
