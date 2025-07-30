@@ -18,12 +18,16 @@
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   position: relative;
-  max-width: 90%; /* Adjust as needed */
-  max-height: 90%; /* Adjust as needed */
+  width: 90vw; /* Use viewport width for better control */
+  height: 90vh; /* Use viewport height for better control */
+  max-width: 1000px; /* Optional: Set a max-width for larger screens */
+  max-height: 800px; /* Optional: Set a max-height for larger screens */
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  /* align-items: center; Remove this for iframe, as it makes iframe too small */
+  /* justify-content: center; Remove this for iframe */
+  z-index: 1001; /* Higher than overlay */
+  overflow: hidden; /* Prevent modal content from overflowing, especially with iframe */
 }
 
 .media-viewer-modal-close {
@@ -32,43 +36,62 @@
   right: 10px;
   background: none;
   border: none;
-  font-size: 24px;
+  font-size: 2.5rem; /* Make it larger for visibility */
   cursor: pointer;
   color: var(--text-color); /* Use your theme variable */
+  z-index: 1002; /* Ensure it's on top of modal content and iframe */
+  padding: 5px;
+  line-height: 1; /* For better vertical alignment */
+  transition: color 0.2s ease;
 }
+
+.media-viewer-modal-close:hover {
+  color: var(--primary-color); /* Example: Change color on hover */
+}
+
 
 /* For actual media (image, video, iframe/pdf) */
 .media-viewer-content-media {
-  max-width: 100%;
-  max-height: 80vh; /* Adjust as needed */
+  width: 100%; /* Make sure media takes full width of its container */
+  height: auto; /* Default auto height for images */
+  max-height: calc(100% - 60px); /* Adjust based on padding/buttons in modal. Gives space for close button and PDF controls. */
   object-fit: contain; /* Ensures content fits without cropping */
-  margin-top: 20px; /* Space from close button */
+  margin-top: 0; /* No top margin needed if flex handles spacing */
+  flex-grow: 1; /* Allow it to grow and fill available space */
 }
 
 /* Specific styling for video content within the modal */
 .modal-video-content {
-  width: auto; /* Allow video to size naturally based on max-height */
-  height: 80vh; /* Prioritize height for video */
+  width: 100%; /* Video should also take full width */
+  height: auto; /* Prioritize natural aspect ratio */
+  max-height: calc(100% - 60px); /* Adjust as above */
 }
 
 /* PDF Viewer specific styles */
 .pdf-viewer-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  width: 100%; /* Or set a specific max-width */
-  height: 80vh; /* Allow PDF to take up most of the height */
-  overflow: auto; /* If PDF is larger than container, allow scrolling */
+  width: 100%;
+  height: 100%; /* Allow PDF viewer to take up available height in modal */
+  overflow: hidden; /* Hide iframe scrollbars if not needed, browser will handle it inside iframe */
 }
 
-.pdf-viewer-container canvas {
+/* No canvas-specific styles needed if using iframe */
+/* .pdf-viewer-container canvas {
   max-width: 100%;
   height: auto;
-  border: 1px solid #ddd; /* Optional: adds a border around the page */
+  border: 1px solid #ddd;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+} */
+
+/* Styling for the iframe itself */
+.pdf-viewer-container iframe {
+  width: 100%;
+  height: 100%;
+  border: none; /* Remove iframe default border */
 }
 
-.pdf-controls {
+.pdf-controls { /* This was for react-pdf's page navigation. Will be less relevant for iframe but can be repurposed */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -77,17 +100,34 @@
   color: var(--text-color);
 }
 
-.pdf-controls button {
+/* New: Styles for PDF download/open buttons */
+.pdf-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px; /* Space above buttons */
+  gap: 10px;
+  flex-shrink: 0; /* Prevent buttons from shrinking if modal content is too large */
+}
+
+.pdf-actions .button {
   padding: 8px 15px;
+  font-size: 0.9rem;
+  border-radius: 5px;
+  cursor: pointer;
+  /* Add your theme button styles here */
   background-color: var(--button-background);
   color: var(--button-text-color);
   border: 1px solid var(--button-border);
-  border-radius: 5px;
-  cursor: pointer;
 }
 
-.pdf-controls button:disabled {
-  background-color: var(--button-background-disabled);
-  cursor: not-allowed;
-  opacity: 0.6;
+.pdf-actions .button.primary {
+  background-color: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+}
+
+.pdf-actions .button.secondary {
+  background-color: var(--secondary-button-background);
+  color: var(--secondary-button-text-color);
+  border-color: var(--secondary-button-border);
 }
