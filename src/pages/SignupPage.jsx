@@ -5,8 +5,7 @@ import PasswordInput from '../components/PasswordInput';
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-// Ensure this path is correct. If LoginPage.css is in a 'styles' folder
-// outside of 'pages', it might be '../styles/LoginPage.css'.
+// Ensure 'LoginPage.css' is in the same directory, or adjust the path.
 import './LoginPage.css';
 
 const SignupPage = () => {
@@ -37,13 +36,13 @@ const SignupPage = () => {
   };
 
   return (
-    // Outer container to center the form, styled by .login-page-container
+    // This div provides the overall page background and centering
     <div className="login-page-container">
-      {/* Inner card container for the form, styled by .login-form-card */}
+      {/* This div acts as the white card container for the form */}
       <div className="login-form-card">
-        <h2>Sign Up</h2>
+        <h2>Sign Up</h2> {/* The h2 styling is defined in LoginPage.css */}
         <form onSubmit={handleSignup}>
-          {/* Inputs will be styled by .login-form-card input[type="text/email/password"] */}
+          {/* These inputs will be styled by .login-form-card input[type="..."] in LoginPage.css */}
           <input
             type="text"
             placeholder="Name"
@@ -60,8 +59,6 @@ const SignupPage = () => {
             required
           />
 
-          {/* PasswordInput component. Make sure it internally renders an input
-              that gets styled by .login-form-card input[type="password"] */}
           <PasswordInput
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -71,15 +68,15 @@ const SignupPage = () => {
             // if your CSS has a .form-input style.
           />
 
-          {/* Apply the .login-button class to the submit button */}
+          {/* This button will be styled by .login-button in LoginPage.css */}
           <button type="submit" className="login-button">Sign Up</button>
         </form>
 
-        {/* Apply .signup-text and .signup-link classes for styling */}
+        {/* This paragraph and link will be styled by .signup-text and .signup-link in LoginPage.css */}
         <p className="signup-text">
           Already have an account? <Link to="/login" className="signup-link">Login</Link>
         </p>
-      </div> {/* Close login-form-card */}
+      </div> {/* Close .login-form-card */}
       <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
     </div>
   );
