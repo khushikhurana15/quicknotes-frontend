@@ -47,8 +47,7 @@ const MediaViewerModal = ({ isOpen, mediaPath, mediaType, onClose }) => {
     return null;
   }
 
-  const fullMediaPath = mediaPath ? `${BACKEND_URL}${mediaPath}` : null;
-
+  const fullMediaPath = mediaPath || null; // Simply use mediaPath directly, or null if it's empty
   const renderMediaContent = () => {
     if (!fullMediaPath) {
         return <p>Media not found or still loading...</p>;
