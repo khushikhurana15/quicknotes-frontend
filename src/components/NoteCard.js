@@ -16,6 +16,7 @@ import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
 
 // Define BACKEND_URL. This should match your backend server URL.
+// IMPORTANT: Keep API_URL for other API calls, but not for media URLs from Cloudinary.
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
 // *** CRITICAL FIX FOR PDF.JS VERSION MISMATCH & Worker Import Error ***
@@ -41,7 +42,8 @@ const NoteCard = ({
   onRestore,
   onDeletePermanently
 }) => {
-  const currentMediaUrl = note.mediaPath;
+  // === MODIFICATION 1: currentMediaUrl should be the direct URL ===
+  const currentMediaUrl = note.mediaPath; // note.mediaPath should now be the full Cloudinary URL
   const currentMediaType = note.mediaType;
 
   const [isEditing, setIsEditing] = useState(false);
@@ -51,8 +53,9 @@ const NoteCard = ({
     Array.isArray(note.tags) ? note.tags.join(', ') : ''
   );
   const [editedMediaFile, setEditedMediaFile] = useState(null);
+  // === MODIFICATION 2: editedMediaPreview should use currentMediaUrl directly ===
   const [editedMediaPreview, setEditedMediaPreview] = useState(
-    currentMediaUrl ? `${API_URL}${currentMediaUrl}` : null
+    currentMediaUrl ? currentMediaUrl : null // Remove API_URL concatenation
   );
   const [editedMediaType, setEditedMediaType] = useState(currentMediaType);
   const [removeMedia, setRemoveMedia] = useState(false);
@@ -71,6 +74,7 @@ const NoteCard = ({
 
   // Functions for MediaViewerModal
   const openMediaViewer = useCallback((path, type) => {
+    // === MODIFICATION 3: Path passed to viewer is already absolute ===
     setCurrentMediaInViewer({ path, type });
     setIsViewerOpen(true);
   }, []);
@@ -111,7 +115,8 @@ const NoteCard = ({
     setEditedTitle(note.title);
     setEditedContent(note.content);
     setEditedTagsInput(Array.isArray(note.tags) ? note.tags.join(', ') : '');
-    setEditedMediaPreview(note.mediaPath ? `${API_URL}${note.mediaPath}` : null);
+    // === MODIFICATION 4: Reset editedMediaPreview without API_URL ===
+    setEditedMediaPreview(note.mediaPath ? note.mediaPath : null);
     setEditedMediaType(note.mediaType);
     setEditedMediaFile(null);
     setRemoveMedia(false);
@@ -157,7 +162,7 @@ const NoteCard = ({
     }
 
     if (editedMediaFile) {
-      formData.append("media", editedMediaFile);
+      formData.append("media", editedMediaFile); // This 'media' field will be handled by multer/Cloudinary on backend
     }
 
     try {
@@ -179,6 +184,8 @@ const NoteCard = ({
           ? JSON.parse(res.data.tags)
           : Array.isArray(res.data.tags) ? res.data.tags : []
       };
+      // Ensure mediaPath in the updated note is direct Cloudinary URL
+      // If your backend correctly sends Cloudinary URL, this is fine.
       onNoteUpdated(updatedNoteWithProcessedTags);
       toast.success("Note updated successfully!");
     } catch (err) {
@@ -197,7 +204,8 @@ const NoteCard = ({
     setEditedContent(note.content);
     setEditedTagsInput(Array.isArray(note.tags) ? note.tags.join(', ') : '');
     setEditedMediaFile(null);
-    setEditedMediaPreview(currentMediaUrl ? `${API_URL}${currentMediaUrl}` : null);
+    // === MODIFICATION 5: Reset editedMediaPreview on cancel without API_URL ===
+    setEditedMediaPreview(currentMediaUrl ? currentMediaUrl : null);
     setEditedMediaType(currentMediaType);
     setRemoveMedia(false);
   };
@@ -206,7 +214,7 @@ const NoteCard = ({
     const file = e.target.files[0];
     if (file) {
       setEditedMediaFile(file);
-      setEditedMediaPreview(URL.createObjectURL(file));
+      setEditedMediaPreview(URL.createObjectURL(file)); // This is for local preview only
       if (file.type.startsWith('image/')) {
         setEditedMediaType('image');
       } else if (file.type.startsWith('video/')) {
@@ -219,7 +227,8 @@ const NoteCard = ({
       setRemoveMedia(false);
     } else {
       setEditedMediaFile(null);
-      setEditedMediaPreview(currentMediaUrl ? `${API_URL}${currentMediaUrl}` : null);
+      // === MODIFICATION 6: Fallback if no new file is chosen, use currentMediaUrl directly ===
+      setEditedMediaPreview(currentMediaUrl ? currentMediaUrl : null);
       setEditedMediaType(currentMediaType);
     }
   };
@@ -306,7 +315,7 @@ const NoteCard = ({
 
   return (
     <div className={`note-card ${note.isPinned ? 'pinned' : ''}`}>
-      {isEditing ? ( // CORRECTED: This ensures the entire editing form is conditionally rendered
+      {isEditing ? (
         <div className="note-edit-form">
             <input
               type="text"
@@ -359,13 +368,16 @@ const NoteCard = ({
             {editedMediaPreview && (
               <div className="edit-media-preview-container">
                 {editedMediaType === 'image' && (
+                  // === MODIFICATION 7: Image preview from direct URL ===
                   <img src={editedMediaPreview} alt="Media Preview" className="edit-uploaded-media-preview" />
                 )}
                 {editedMediaType === 'video' && (
+                  // === MODIFICATION 8: Video preview from direct URL ===
                   <video controls src={editedMediaPreview} className="edit-uploaded-media-preview" />
                 )}
                 {editedMediaType === 'application' && (
                   // For editing mode, iframe is simpler/safer for preview
+                  // === MODIFICATION 9: PDF iframe preview from direct URL ===
                   <iframe src={editedMediaPreview} title="PDF Preview" className="edit-uploaded-pdf-preview" />
                 )}
               </div>
@@ -380,7 +392,7 @@ const NoteCard = ({
               </button>
             </div>
           </div>
-      ) : ( // CORRECTED: This is the 'else' part for display mode
+      ) : ( // This is the 'else' part for display mode
         <div className="note-display">
           <div className="note-header">
             <div className="note-title-box">
@@ -417,7 +429,8 @@ const NoteCard = ({
             <div className={`note-media-display-wrapper ${note.mediaType === 'application' ? 'is-pdf' : ''}`}>
               {note.mediaType === 'image' && (
                 <img
-                  src={`${API_URL}${note.mediaPath}`}
+                  // === MODIFICATION 10: Image display from direct URL ===
+                  src={note.mediaPath}
                   alt="Note media"
                   className="note-image"
                   style={{ cursor: 'pointer' }}
@@ -427,7 +440,8 @@ const NoteCard = ({
               {note.mediaType === 'video' && (
                 <video
                   controls
-                  src={`${API_URL}${note.mediaPath}`}
+                  // === MODIFICATION 11: Video display from direct URL ===
+                  src={note.mediaPath}
                   className="note-video"
                   style={{ cursor: 'pointer' }}
                   onClick={() => openMediaViewer(note.mediaPath, note.mediaType)}
@@ -440,10 +454,15 @@ const NoteCard = ({
                   style={{ width: '100%', height: '300px', overflow: 'hidden', border: '1px solid #eee', position: 'relative' }} // Added basic styling
                 >
                   <Document
-                    file={`${API_URL}${note.mediaPath}`}
+                    // === MODIFICATION 12: PDF document source from direct URL ===
+                    file={note.mediaPath}
                     onLoadSuccess={onInCardPdfLoadSuccess}
                     onLoadError={(error) => {
                       console.error(`Error loading PDF for note ${note.id}:`, error);
+                      // === MODIFICATION 13: Handle PDF loading errors gracefully ===
+                      // You might want to display a user-friendly message here,
+                      // as the 404 error was previously caught here.
+                      toast.error("Failed to load PDF preview. It might be missing.");
                     }}
                     loading={<p>Loading PDF preview...</p>}
                     error={<p style={{ color: 'red' }}>Error loading PDF preview.</p>}
@@ -508,7 +527,7 @@ const NoteCard = ({
 
       <MediaViewerModal
         isOpen={isViewerOpen}
-        mediaPath={currentMediaInViewer.path}
+        mediaPath={currentMediaInViewer.path} // This path should now be a direct Cloudinary URL
         mediaType={currentMediaInViewer.type}
         onClose={closeMediaViewer}
       />
